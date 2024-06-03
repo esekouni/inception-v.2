@@ -1,0 +1,12 @@
+listen 443 ssl;
+	
+	ssl_protocols TLSv1.2;
+	ssl_certificate  /etc/nginx/cert/server.pem;
+	ssl_certificate_key  /etc/nginx/private/server.pem;
+
+
+
+
+COPY cert.pem /etc/nginx/cert/server.pem
+
+COPY key.pem /etc/nginx/private/server.pem
