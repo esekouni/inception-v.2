@@ -4,34 +4,24 @@ services:
   db:
     container_name: mariadb
     build:
-      context: ./mariaDB/
+      context: ./requirements/mariaDB/
+      dockerfile: Dockerfile
     volumes:
       - db_data:/var/lib/mysql
     restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: 1234
-      MARIADB_DATABASE: wordpress
-      MARIADB_USER: wordpress
-      MARIADB_PASSWORD: wordpress
+    env_file:
+      - .env
 
   wordpress:
     container_name: wordpress
     depends_on:
       - db
     build:
-      context: ./wordpress/
+      context: ./requirements/wordpress/
       dockerfile: Dockerfile
     restart: always
-    environment:
-      WORDPRESS_HOST: mariadb:9000
-      WORDPRESS_USER: wordpress
-      WORDPRESS_PASSWORD: wordpress
-      WORDPRESS_NAME: wordpress
-      MARIADB_ROOT_PASSWORD: wordpress
-      MARIADB_DATABASE: wordpress
-      MARIADB_USER: wordpress
-      MARIADB_PASSWORD: wordpress
-      
+    env_file:
+      - .env
     volumes:
       - wordpress_data:/var/www/html
 
@@ -40,7 +30,7 @@ services:
     depends_on:
       - wordpress
     build:
-      context: ./ngnix/
+      context: ./requirements/ngnix/
       dockerfile: Dockerfile
     ports:
       - "443:443"
@@ -52,10 +42,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/esekouni/rr/wordpress_database
+      device: /home/esekouni/data/wordpress_database
   db_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/esekouni/rr/database
+      device: /home/esekouni/data/mariadb_database

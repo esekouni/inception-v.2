@@ -10,4 +10,3 @@ mariadbd -u mysql --bootstrap < data.sql
 
 $@
 
-# exec "$@"

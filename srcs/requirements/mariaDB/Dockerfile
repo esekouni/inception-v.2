@@ -1,4 +1,4 @@
-FROM  debian:latest
+FROM  debian:bookworm
 
 RUN apt-get update && apt-get install -y mariadb-server vim 
 
@@ -11,7 +11,7 @@ RUN mysql_install_db --user=mysql --ldata=/var/lib/mysql
 # ENV  MARIADB_USER wordpress
 # ENV  MARIADB_PASSWORD wordpress
 
-COPY script.sh /home
+COPY tools/script.sh /home
 
 RUN chmod +x /home/script.sh
 
