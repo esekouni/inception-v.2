@@ -1,4 +1,4 @@
-up : init
+all : init
 	docker-compose -f ./srcs/docker-compose.yml up
 
 init : 
@@ -6,6 +6,7 @@ init :
 
 fclean : clean
 	sudo rm -rf /home/esekouni/data
+	sudo rm -rf ./srcs/requirements/ngnix/tools
 	docker system prune -af
 
 clean :

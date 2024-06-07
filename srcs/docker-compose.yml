@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  mariadb:
     container_name: mariadb
     build:
       context: ./requirements/mariaDB/
@@ -9,17 +9,21 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: always
+    networks:
+      - inception
     env_file:
       - .env
 
   wordpress:
     container_name: wordpress
     depends_on:
-      - db
+      - mariadb
     build:
       context: ./requirements/wordpress/
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - inception
     env_file:
       - .env
     volumes:
@@ -32,6 +36,8 @@ services:
     build:
       context: ./requirements/ngnix/
       dockerfile: Dockerfile
+    networks:
+      - inception
     ports:
       - "443:443"
     volumes:
@@ -49,3 +55,8 @@ volumes:
       type: none
       o: bind
       device: /home/esekouni/data/mariadb_database
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
